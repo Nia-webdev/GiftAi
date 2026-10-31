@@ -37,3 +37,228 @@
     max-width: 100%;
   }
 }
+
+@layer components {
+  /* Classic hover: animated thin underline for text links */
+  .hv-link {
+    background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s ease-out;
+  }
+
+  .hv-link:hover {
+    background-size: 100% 1px;
+  }
+}
+
+@layer components {
+  /* Serif italic accent word, e.g. "Shop by Category" */
+  .accent {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.12em;
+    color: #22d3ee;
+  }
+
+  /* Typewriter caret */
+  .caret {
+    display: inline-block;
+    width: 2px;
+    height: 0.85em;
+    margin-left: 4px;
+    vertical-align: -0.05em;
+    background: #22d3ee;
+    animation: caret-blink 1s steps(1) infinite;
+  }
+
+  /* Endless marquee */
+  .marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee var(--dur, 45s) linear infinite;
+  }
+
+  .marquee-track.reverse {
+    animation-direction: reverse;
+  }
+
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .caret {
+    animation: none;
+  }
+}
+
+@layer components {
+  /* Page backdrop (gradients only, no blur filters, so it stays light) */
+  .fx-orb {
+    position: absolute;
+    border-radius: 9999px;
+    will-change: transform;
+    animation: fx-drift 22s ease-in-out infinite alternate;
+  }
+  .fx-orb-a { width: 46rem; height: 46rem; left: -14rem; top: -14rem; background: radial-gradient(circle, rgba(34, 211, 238, 0.28), transparent 65%); }
+  .fx-orb-b { width: 42rem; height: 42rem; right: -12rem; top: 22%; background: radial-gradient(circle, rgba(37, 99, 235, 0.3), transparent 65%); animation-duration: 28s; animation-delay: -6s; }
+  .fx-orb-c { width: 38rem; height: 38rem; left: 28%; bottom: -14rem; background: radial-gradient(circle, rgba(124, 58, 237, 0.22), transparent 65%); animation-duration: 32s; animation-delay: -12s; }
+  .fx-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 10%, transparent 70%);
+    mask-image: radial-gradient(ellipse at 50% 0%, #000 10%, transparent 70%);
+  }
+  .fx-particle {
+    position: absolute;
+    bottom: -12px;
+    border-radius: 9999px;
+    background: #22d3ee;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: fx-rise linear infinite;
+  }
+
+  /* Rings and floating icon */
+  .fx-spin { animation: fx-spin 18s linear infinite; }
+  .fx-spin-rev { animation: fx-spin 26s linear infinite reverse; }
+  .fx-float { animation: fx-float 4.5s ease-in-out infinite; }
+  .fx-pulse { animation: fx-pulse 3.2s ease-in-out infinite; }
+  .fx-pulse-ring { animation: fx-ring 2.4s ease-out infinite; }
+
+  /* Tilt cards */
+  .fx-tilt {
+    transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.35s ease-out;
+  }
+  .fx-tilt-glare {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s;
+    background: radial-gradient(170px circle at var(--mx, 50%) var(--my, 50%), rgba(34, 211, 238, 0.2), transparent 65%);
+  }
+  .fx-tilt:hover .fx-tilt-glare { opacity: 1; }
+
+  /* Gift cards entering the grid */
+  .fx-card-in {
+    opacity: 0;
+    animation: fx-card-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Buttons and text */
+  .btn-shine { position: relative; overflow: hidden; }
+  .btn-shine::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: translateX(-150%) skewX(-20deg);
+    animation: fx-shine 3.6s ease-in-out infinite;
+  }
+  .text-shimmer {
+    background: linear-gradient(90deg, #22d3ee, #b6f4ff, #38bdf8, #22d3ee);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: fx-shimmer 6s linear infinite;
+  }
+  .banner-flow {
+    position: relative;
+    background: linear-gradient(120deg, #071d3a, #062849 55%, #0b3a66);
+  }
+  .banner-flow::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    bottom: -50%;
+    left: 0;
+    width: 30%;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent, rgba(34, 211, 238, 0.09), transparent);
+    transform: translateX(-120%) skewX(-20deg);
+    animation: fx-sweep 8s ease-in-out infinite;
+  }
+  .skeleton {
+    background: #0e2f58;
+    animation: fx-skel 1.4s ease-in-out infinite;
+  }
+
+  /* Card with a softly pulsing glowing border */
+  .glow-border { position: relative; }
+  .glow-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: conic-gradient(from 200deg, transparent 0 55%, #22d3ee, #a78bfa, transparent);
+    -webkit-mask: linear-gradient(#000 0 0) content-box,
+              linear-gradient(#000 0 0);
+mask: linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: fx-glow 4s ease-in-out infinite;
+  }
+}
+
+@keyframes fx-drift { to { transform: translate3d(60px, -40px, 0) scale(1.12); } }
+@keyframes fx-rise {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  10% { opacity: 0.8; }
+  100% { transform: translate3d(30px, -110vh, 0); opacity: 0; }
+}
+@keyframes fx-spin { to { transform: rotate(360deg); } }
+@keyframes fx-float { 50% { transform: translateY(-10px); } }
+@keyframes fx-ring { 0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.55); } 100% { box-shadow: 0 0 0 12px rgba(34, 211, 238, 0); } }
+@keyframes fx-pulse { 50% { opacity: 0.35; transform: scale(1.2); } }
+@keyframes fx-shine { 0% { transform: translateX(-150%) skewX(-20deg); } 60%, 100% { transform: translateX(400%) skewX(-20deg); } }
+@keyframes fx-shimmer { to { background-position: -250% 0; } }
+@keyframes fx-sweep { 0% { transform: translateX(-120%) skewX(-20deg); } 60%, 100% { transform: translateX(450%) skewX(-20deg); } }
+@keyframes fx-skel { 50% { opacity: 0.55; } }
+@keyframes fx-glow { 50% { opacity: 0.35; } }
+@keyframes fx-card-in {
+  from { opacity: 0; transform: translateY(28px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-orb, .fx-particle, .fx-spin, .fx-spin-rev, .fx-float, .fx-pulse, .fx-pulse-ring,
+  .btn-shine::after, .text-shimmer, .banner-flow::after, .glow-border::before, .skeleton {
+    animation: none;
+  }
+  .fx-card-in { opacity: 1; animation: none; }
+}

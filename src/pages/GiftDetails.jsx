@@ -121,7 +121,7 @@ function GiftDetails() {
                       Math.max(1, current - 1)
                     )
                   }
-                  className="px-4 py-2 text-xl transition hover:bg-[#103F69]"
+                  className="px-4 py-2 text-xl transition duration-500 ease-out hover:bg-[#103F69]"
                   aria-label="Decrease quantity"
                 >
                   −
@@ -136,7 +136,7 @@ function GiftDetails() {
                   onClick={() =>
                     setQuantity((current) => current + 1)
                   }
-                  className="px-4 py-2 text-xl transition hover:bg-[#103F69]"
+                  className="px-4 py-2 text-xl transition duration-500 ease-out hover:bg-[#103F69]"
                   aria-label="Increase quantity"
                 >
                   +
@@ -157,10 +157,10 @@ function GiftDetails() {
             <button
               type="button"
               onClick={handleAddToCart}
-              className={`mt-6 flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 font-bold transition-all duration-300 active:scale-95 ${
+              className={`mt-6 flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3 font-bold transition-all duration-500 ease-out active:scale-[0.99] ${
                 isAdded
                   ? "scale-[1.02] bg-green-500 text-white shadow-lg shadow-green-500/30"
-                  : "bg-[#22D3EE] text-[#001329] shadow-md shadow-cyan-400/10 hover:-translate-y-0.5 hover:bg-[#52E7FF] hover:shadow-lg hover:shadow-cyan-400/20"
+                  : "bg-[#22D3EE] text-[#001329] shadow-md shadow-cyan-400/10 hover:bg-[#52E7FF] hover:shadow-lg hover:shadow-cyan-400/20"
               }`}
             >
               {isAdded ? (
@@ -177,7 +177,7 @@ function GiftDetails() {
             </button>
 
             {isAdded && (
-              <p className="mt-3 animate-pulse text-center text-sm font-medium text-green-400">
+              <p className="mt-3 text-center text-sm font-medium text-green-400">
                 🎁 Your gift has been added to the cart!
               </p>
             )}

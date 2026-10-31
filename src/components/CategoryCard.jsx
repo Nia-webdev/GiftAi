@@ -5,13 +5,13 @@ function CategoryCard({ category }) {
   return (
     <Link
       to={`/gifts?category=${encodeURIComponent(category.name)}`}
-      className="group block overflow-hidden rounded-xl border border-[#103F69] bg-[#071D3A] transition-all duration-300 hover:-translate-y-1 hover:border-[#22D3EE] hover:shadow-lg hover:shadow-cyan-500/10"
+      className="group block overflow-hidden rounded-xl border border-[#103F69] bg-[#071D3A] transition-all duration-500 ease-out hover:border-[#22D3EE] hover:shadow-lg hover:shadow-cyan-500/10"
     >
       <div className="h-[125px] overflow-hidden">
         <img
           src={category.image}
           alt={category.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
         />
       </div>
 

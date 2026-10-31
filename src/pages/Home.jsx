@@ -6,6 +6,40 @@ import GiftCard from "../components/GiftCard";
 import AiBanner from "../components/AiBanner";
 import HowItWorks from "../components/HowItWorks";
 import Footer from "../components/Footer";
+import TypeWords from "../components/TypeWords";
+import Marquee from "../components/Marquee";
+import Reveal from "../components/Reveal";
+import Stats from "../components/Stats";
+import OccasionList from "../components/OccasionList";
+
+const heroWords = [
+  "with AI.",
+  "for Birthdays.",
+  "for Weddings.",
+  "for Anniversaries.",
+  "for Mother’s Day.",
+];
+
+const occasionWords = [
+  "Birthday",
+  "Anniversary",
+  "Graduation",
+  "Wedding",
+  "Valentine’s",
+  "Mother’s Day",
+  "Father’s Day",
+  "Custom Gifts",
+];
+
+const promiseWords = [
+  "Personalized",
+  "AI Powered",
+  "Fast Delivery",
+  "Secure Payment",
+  "Cash on Delivery",
+  "Easypaisa",
+  "JazzCash",
+];
 
 function Home() {
   const categories = [
@@ -134,7 +168,7 @@ function Home() {
           <h1 className="mb-[15px] text-[36px] leading-[1.05] font-extrabold sm:text-[45px]">
             Find the Perfect Gift
             <br />
-            with <span className="text-[#22D3EE]">AI</span>
+            <TypeWords words={heroWords} />
           </h1>
 
           <p className="mt-[12px] max-w-[480px] text-[15px] leading-[1.6] text-[#DCE6F7] [text-shadow:0_1px_8px_rgba(2,13,32,0.9)] max-sm:max-w-[17rem] sm:text-[16px]">
@@ -145,14 +179,14 @@ function Home() {
           <div className="mt-[35px] flex flex-row flex-wrap items-center gap-2">
             <Link
               to="/gifts"
-              className="rounded-[9px] bg-[#22D3EE] px-[22px] py-3 font-bold text-[#061A3A] transition hover:-translate-y-0.5 hover:bg-[#54E6FF]"
+              className="rounded-[9px] bg-[#22D3EE] px-[22px] py-3 font-bold text-[#061A3A] transition duration-500 ease-out hover:bg-[#54E6FF]"
             >
               Explore Gifts →
             </Link>
 
             <Link
               to="/ai-recommendation"
-              className="rounded-[9px] border border-[#22D3EE] bg-[#061A3A]/75 px-[22px] py-3 font-bold text-white transition hover:bg-[#00BFFB]/10"
+              className="rounded-[9px] border border-[#22D3EE] bg-[#061A3A]/75 px-[22px] py-3 font-bold text-white transition duration-500 ease-out hover:bg-[#00BFFB]/10"
             >
               🤖 Get AI Recommendation
             </Link>
@@ -167,12 +201,18 @@ function Home() {
 
       <FeatureBar />
 
+      <div className="my-6 space-y-2">
+        <Marquee items={occasionWords} />
+        <Marquee items={promiseWords} reverse size="sm" speed={55} />
+      </div>
+
       {/* CATEGORY SECTION */}
+      <Reveal>
       <section className="my-[25px] mx-[15px]">
         <div className="mb-[18px] flex items-end justify-between gap-3">
           <div>
             <h2 className="mb-[5px] text-xl font-bold text-white">
-              Shop by Category
+              Shop by <span className="accent">Category</span>
             </h2>
             <p className="text-xs text-[#819BB5]">
               Find gifts for every special occasion.
@@ -196,13 +236,15 @@ function Home() {
           ))}
         </div>
       </section>
+      </Reveal>
 
       {/* FEATURED GIFTS SECTION */}
+      <Reveal>
       <section className="my-[25px] mx-[15px]">
         <div className="mb-[18px] flex items-end justify-between gap-3">
           <div>
             <h2 className="mb-[5px] text-xl font-bold text-white">
-              Featured Gifts
+              Featured <span className="accent">Gifts</span>
             </h2>
             <p className="text-xs text-[#819BB5]">
               Popular gifts picked for special moments.
@@ -226,6 +268,11 @@ function Home() {
           ))}
         </div>
       </section>
+      </Reveal>
+
+      <Stats />
+
+      <OccasionList items={categories} />
 
       <AiBanner />
       <HowItWorks />

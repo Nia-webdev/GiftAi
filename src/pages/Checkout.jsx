@@ -180,7 +180,7 @@ function Checkout() {
 
               <button
                 type="submit"
-                className="w-full rounded-lg bg-[#22D3EE] px-5 py-3 font-bold text-[#001329] transition hover:bg-[#52E7FF]"
+                className="w-full rounded-lg bg-[#22D3EE] px-5 py-3 font-bold text-[#001329] transition duration-500 ease-out hover:bg-[#52E7FF]"
               >
                 {paymentMethod === "cod" ? "Place Order" : "Pay & Place Order"} · ${total.toFixed(2)}
               </button>

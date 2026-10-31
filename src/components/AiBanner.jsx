@@ -27,7 +27,7 @@ function AiBanner() {
       {/* Button */}
       <Link
         to="/ai-recommendation"
-        className="rounded-lg bg-[#22D3EE] px-3 py-[9px] text-[10px] font-bold text-[#001329] transition hover:-translate-y-0.5 hover:bg-[#52E7FF] sm:px-4 sm:text-[11px]"
+        className="rounded-lg bg-[#22D3EE] px-3 py-[9px] text-[10px] font-bold text-[#001329] transition duration-500 ease-out hover:bg-[#52E7FF] sm:px-4 sm:text-[11px]"
       >
         Get Recommendation →
       </Link>

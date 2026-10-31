@@ -1,11 +1,13 @@
-
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import AuthShell from "../components/AuthShell";
+import { AuthButton, AuthError, AuthField } from "../components/AuthParts";
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [form, setForm] = useState({
     email: "",
@@ -14,6 +16,7 @@ function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [status, setStatus] = useState("idle");
 
   const handleChange = (event) => {
     setForm({
@@ -31,125 +34,48 @@ function Login() {
       return;
     }
 
-    const savedUsers = JSON.parse(
-      localStorage.getItem("giftai-users") || "[]"
-    );
+    setStatus("loading");
 
-    const user = savedUsers.find(
-      (item) =>
-        item.email.toLowerCase() === form.email.trim().toLowerCase() &&
-        item.password === form.password
-    );
+    setTimeout(() => {
+      const savedUsers = JSON.parse(localStorage.getItem("giftai-users") || "[]");
 
-    if (!user) {
-      setError("Invalid email or password. Please register first.");
-      return;
-    }
+      const user = savedUsers.find(
+        (item) =>
+          item.email.toLowerCase() === form.email.trim().toLowerCase() &&
+          item.password === form.password
+      );
 
-    localStorage.setItem(
-      "giftai-current-user",
-      JSON.stringify({
-        name: user.name,
-        email: user.email,
-      })
-    );
+      if (!user) {
+        setStatus("idle");
+        setError("Invalid email or password. Please register first.");
+        return;
+      }
 
-    navigate("/");
+      localStorage.setItem(
+        "giftai-current-user",
+        JSON.stringify({
+          name: user.name,
+          email: user.email,
+        })
+      );
+      window.dispatchEvent(new Event("giftai-auth-change"));
+
+      setStatus("success");
+      setTimeout(() => navigate("/"), 700);
+    }, 800);
   };
 
   return (
-    <div className="min-h-screen bg-[#020D20] text-white">
-      <Navbar />
-
-      <main className="flex min-h-[75vh] items-center justify-center px-5 py-12">
-        <section className="w-full max-w-md rounded-2xl border border-[#164E82] bg-[#071D3A] p-6 shadow-xl sm:p-8">
-          <div className="mb-6 text-center">
-            <div className="text-5xl">🎁</div>
-
-            <h1 className="mt-4 text-3xl font-bold">
-              Welcome Back
-            </h1>
-
-            <p className="mt-2 text-sm text-[#9BB5D0]">
-              Login to continue your GiftAI journey.
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-medium"
-              >
-                Email Address
-              </label>
-
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                required
-                className="w-full rounded-lg border border-[#164E82] bg-[#020D20] px-4 py-3 outline-none focus:border-[#22D3EE]"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-medium"
-              >
-                Password
-              </label>
-
-              <div className="flex rounded-lg border border-[#164E82] bg-[#020D20] focus-within:border-[#22D3EE]">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  value={form.password}
-                  onChange={handleChange}
-                  placeholder="Enter your password"
-                  required
-                  className="min-w-0 flex-1 bg-transparent px-4 py-3 outline-none"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="px-3 text-sm text-[#22D3EE]"
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <p
-                role="alert"
-                className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300"
-              >
-                {error}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-[#22D3EE] px-5 py-3 font-bold text-[#001329] transition hover:bg-[#52E7FF]"
-            >
-              Login
-            </button>
-          </form>
-
+    <AuthShell
+      title="Welcome Back"
+      subtitle="Login to continue your GiftAI journey."
+      footer={
+        <>
           <p className="mt-6 text-center text-sm text-[#9BB5D0]">
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="font-semibold text-[#22D3EE] hover:text-white"
+              className="hv-link font-semibold text-[#22D3EE] transition duration-500 hover:text-white"
             >
               Register
             </Link>
@@ -157,15 +83,69 @@ function Login() {
 
           <Link
             to="/gifts"
-            className="mt-5 block text-center text-sm text-[#9BB5D0] hover:text-[#22D3EE]"
+            className="group mt-5 block text-center text-sm text-[#9BB5D0] transition duration-500 hover:text-[#22D3EE]"
           >
-            ← Continue browsing gifts
+            <span className="inline-block transition-transform duration-500 group-hover:-translate-x-1">←</span>{" "}
+            Continue browsing gifts
           </Link>
-        </section>
-      </main>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {location.state?.registered && (
+          <motion.p
+            role="status"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="rounded-lg border border-cyan-500/30 bg-cyan-500/10 p-3 text-sm text-cyan-300"
+          >
+            Account created successfully! Please login to continue. 🎉
+          </motion.p>
+        )}
 
-      <Footer />
-    </div>
+        <AuthField
+          id="email"
+          name="email"
+          type="email"
+          label="Email Address"
+          icon={Mail}
+          autoComplete="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="you@example.com"
+          required
+        />
+
+        <AuthField
+          id="password"
+          name="password"
+          type={showPassword ? "text" : "password"}
+          label="Password"
+          icon={Lock}
+          autoComplete="current-password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="Enter your password"
+          required
+          right={
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="px-4 text-[#5F7FA3] transition-colors duration-500 hover:text-[#22D3EE]"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          }
+        />
+
+        <AuthError message={error} />
+
+        <AuthButton status={status} loadingText="Signing in…" successText="Welcome back!">
+          Login
+        </AuthButton>
+      </form>
+    </AuthShell>
   );
 }
 

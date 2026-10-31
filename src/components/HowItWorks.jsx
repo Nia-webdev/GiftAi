@@ -41,7 +41,7 @@ function HowItWorks() {
         {steps.map((step) => (
           <div
             key={step.number}
-            className="flex min-h-[95px] items-center gap-3 rounded-[12px] border border-[#10436C] bg-[#061A32] p-3 transition-all duration-300 hover:-translate-y-1 hover:border-[#08D9FF] hover:shadow-[0_0_15px_rgba(8,217,255,0.15)]"
+            className="flex min-h-[95px] items-center gap-3 rounded-[12px] border border-[#10436C] bg-[#061A32] p-3 transition-all duration-500 ease-out hover:border-[#08D9FF] hover:shadow-[0_0_15px_rgba(8,217,255,0.15)]"
           >
             {/* Step Number */}
             <span className="flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-full bg-[#057AB5] text-[12px] font-bold text-white">

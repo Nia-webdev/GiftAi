@@ -1,140 +1,300 @@
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  MessageCircle,
+  Mail,
+  Phone,
+  X,
+  ArrowUpRight,
+  CheckCircle2,
+} from "lucide-react";
 
 function Footer() {
-  const linkStyle =
-    "w-fit text-xs text-[#94ABC1] transition-all duration-300 hover:text-[#22D3EE] hover:translate-x-1";
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [subscribedEmail, setSubscribedEmail] = useState("");
 
-  const socialStyle =
-    "text-xs text-[#22D3EE] transition-all duration-300 hover:text-white hover:-translate-y-1";
+  const contactOptions = [
+    {
+      title: "WhatsApp",
+      description: "Chat with us on WhatsApp",
+      value: "+92 336 4217364",
+      href: "https://wa.me/923364217364",
+      icon: MessageCircle,
+    },
+    {
+      title: "Email",
+      description: "Send us your questions",
+      value: "fizirana9@gmail.com",
+      href: "mailto:fizirana9@gmail.com",
+      icon: Mail,
+    },
+    {
+      title: "Phone",
+      description: "Call us directly",
+      value: "03364217364",
+      href: "tel:+923364217364",
+      icon: Phone,
+    },
+  ];
+
+  function handleSubscribe(event) {
+    event.preventDefault();
+
+    if (!email.trim()) return;
+
+    // Demo only: no email is sent or stored on a server.
+    setSubscribedEmail(email.trim());
+    setEmail("");
+  }
 
   return (
-    <footer className="border-t border-[#12334F] bg-[#031329] px-[5%] py-8 text-[#94ABC1] sm:px-[9%]">
-      <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-4">
-
-        {/* BRAND */}
-        <div>
-          <Link
-            to="/"
-            className="flex w-fit items-center gap-2 text-xl font-bold text-white transition-colors duration-300 hover:text-[#22D3EE]"
-          >
-            🎁 Gift<span className="text-[#22D3EE]">AI</span>
-          </Link>
-
-          <p className="mt-3 max-w-[260px] text-xs leading-5">
-            Discover thoughtful gifts and make every special moment memorable.
-          </p>
-
-          <div className="mt-3 flex flex-wrap gap-3">
-            <a
-              href="https://www.facebook.com/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Facebook"
-              className={socialStyle}
+    <>
+      <footer className="border-t border-cyan-400/20 bg-[#031329] text-gray-300">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+          {/* Brand */}
+          <div>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-2xl font-bold text-white"
             >
-              Facebook
-            </a>
-
-            <a
-              href="https://www.instagram.com/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Instagram"
-              className={socialStyle}
-            >
-              Instagram
-            </a>
-          </div>
-        </div>
-
-        {/* QUICK LINKS */}
-        <div>
-          <h3 className="mb-3 text-sm font-bold text-white">
-            Quick Links
-          </h3>
-
-          <div className="flex flex-col items-start gap-2">
-            <Link className={linkStyle} to="/">
-              Home
+              <span className="text-3xl">🎁</span>
+              Gift<span className="text-cyan-400">AI</span>
             </Link>
 
-            <Link className={linkStyle} to="/gifts">
-              Explore Gifts
-            </Link>
-
-            <Link className={linkStyle} to="/ai-recommendation">
-              AI Recommendation
-            </Link>
-          </div>
-        </div>
-
-        {/* CUSTOMER SERVICE */}
-        <div>
-          <h3 className="mb-3 text-sm font-bold text-white">
-            Customer Service
-          </h3>
-
-          <div className="flex flex-col items-start gap-2">
-            <Link className={linkStyle} to="/orders">
-              Track Orders
-            </Link>
-
-            <Link className={linkStyle} to="/cart">
-              Shopping Cart
-            </Link>
-
-            <a
-              className={linkStyle}
-              href="mailto:support@giftai.com"
-            >
-              Contact Us
-            </a>
-          </div>
-        </div>
-
-        {/* NEWSLETTER */}
-        <div>
-          <h3 className="mb-3 text-sm font-bold text-white">
-            Stay Connected
-          </h3>
-
-          <p className="mb-3 text-xs">
-            Get updates about gifts and special occasions.
-          </p>
-
-          <form
-            className="flex max-w-[280px]"
-            onSubmit={(event) => event.preventDefault()}
-          >
-            <input
-              type="email"
-              required
-              placeholder="Your email"
-              aria-label="Your email"
-              className="min-w-0 flex-1 rounded-l-md border border-[#254B6C] bg-[#102B48] px-3 py-2 text-xs text-white outline-none transition-colors duration-300 placeholder:text-[#8199B2] focus:border-[#22D3EE] focus:ring-1 focus:ring-[#22D3EE]"
-            />
+            <p className="mt-4 max-w-xs text-sm leading-7 text-gray-400">
+              Thoughtful gifts, personalized recommendations, and happier
+              moments — all in one place.
+            </p>
 
             <button
-              type="submit"
-              aria-label="Subscribe"
-              className="rounded-r-md bg-[#22D3EE] px-3 text-xs font-bold text-[#001329] transition-all duration-300 hover:bg-white"
+              type="button"
+              onClick={() => setIsContactOpen(true)}
+              className="mt-5 inline-flex items-center gap-2 rounded-lg border border-cyan-400/40 px-4 py-2.5 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400 hover:text-[#031329]"
             >
-              →
+              Contact Us
+              <ArrowUpRight size={16} />
             </button>
-          </form>
+          </div>
+
+          {/* Quick links */}
+          <div>
+            <h3 className="mb-4 text-lg font-semibold text-white">
+              Quick Links
+            </h3>
+
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link className="transition hover:text-cyan-300" to="/">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link className="transition hover:text-cyan-300" to="/gifts">
+                  Explore Gifts
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="transition hover:text-cyan-300"
+                  to="/ai-recommendation"
+                >
+                  AI Recommendation
+                </Link>
+              </li>
+              <li>
+                <Link className="transition hover:text-cyan-300" to="/orders">
+                  My Orders
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Customer service */}
+          <div>
+            <h3 className="mb-4 text-lg font-semibold text-white">
+              Customer Service
+            </h3>
+
+            <ul className="space-y-3 text-sm">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setIsContactOpen(true)}
+                  className="text-left transition hover:text-cyan-300"
+                >
+                  Contact Support
+                </button>
+              </li>
+              <li>
+                <a
+                  href="mailto:fizirana9@gmail.com"
+                  className="transition hover:text-cyan-300"
+                >
+                  Email Support
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/923364217364"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition hover:text-cyan-300"
+                >
+                  WhatsApp Support
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Stay Connected */}
+          <div>
+            <h3 className="mb-4 text-lg font-semibold text-white">
+              Stay Connected
+            </h3>
+
+            <p className="mb-4 text-sm leading-6 text-gray-400">
+              Subscribe for a demo confirmation and stay connected with GiftAI.
+            </p>
+
+            <form onSubmit={handleSubscribe} className="space-y-3">
+              <label htmlFor="footer-email" className="sr-only">
+                Your email address
+              </label>
+
+              <input
+                id="footer-email"
+                type="email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  setSubscribedEmail("");
+                }}
+                placeholder="Enter your email"
+                required
+                className="w-full rounded-lg border border-cyan-400/20 bg-[#020d20] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+              />
+
+              <button
+                type="submit"
+                className="w-full rounded-lg bg-cyan-400 px-4 py-3 text-sm font-bold text-[#031329] transition hover:bg-cyan-300"
+              >
+                Subscribe
+              </button>
+            </form>
+
+            {subscribedEmail && (
+              <p
+                role="status"
+                className="mt-3 flex items-start gap-2 text-sm leading-5 text-green-300"
+              >
+                <CheckCircle2 size={18} className="mt-0.5 shrink-0" />
+                Demo confirmation! {subscribedEmail} has been accepted for this
+                demo only.
+              </p>
+            )}
+
+            <p className="mt-3 text-xs text-gray-500">
+              Demo only — your email is not sent or saved to a server.
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* BOTTOM BAR */}
-      <div className="mt-7 flex flex-col gap-2 border-t border-[#12334F] pt-3 text-[10px] text-[#607991] sm:flex-row sm:items-center sm:justify-between">
-        <p>© {new Date().getFullYear()} GiftAI. All rights reserved.</p>
+        <div className="border-t border-white/10 px-6 py-5 text-center text-xs text-gray-500">
+          © {new Date().getFullYear()} GiftAI. All rights reserved.
+        </div>
+      </footer>
 
-        <p className="transition-colors duration-300 hover:text-[#22D3EE]">
-          Made to make gifting easier.
-        </p>
-      </div>
-    </footer>
+      {/* Contact Us popup */}
+      {isContactOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          onClick={() => setIsContactOpen(false)}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="contact-popup-title"
+            className="relative w-full max-w-md rounded-2xl border border-cyan-400/30 bg-[#031329] p-6 shadow-2xl shadow-cyan-950/40 sm:p-8"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              aria-label="Close contact popup"
+              onClick={() => setIsContactOpen(false)}
+              className="absolute right-4 top-4 rounded-lg p-2 text-gray-400 transition hover:bg-white/10 hover:text-white"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="mb-6 pr-8">
+              <p className="mb-2 text-sm font-semibold text-cyan-300">
+                WE ARE HERE TO HELP
+              </p>
+              <h2
+                id="contact-popup-title"
+                className="text-2xl font-bold text-white"
+              >
+                Contact GiftAI
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-gray-400">
+                Choose how you would like to contact us.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {contactOptions.map((option) => {
+                const Icon = option.icon;
+
+                return (
+                  <a
+                    key={option.title}
+                    href={option.href}
+                    target={
+                      option.title === "WhatsApp" ? "_blank" : undefined
+                    }
+                    rel={
+                      option.title === "WhatsApp" ? "noreferrer" : undefined
+                    }
+                    className="flex items-center gap-4 rounded-xl border border-white/10 bg-[#020d20] p-4 transition hover:border-cyan-400/60 hover:bg-cyan-400/5"
+                  >
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-cyan-400/10 text-cyan-300">
+                      <Icon size={21} />
+                    </span>
+
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-semibold text-white">
+                        {option.title}
+                      </span>
+                      <span className="mt-1 block text-xs text-gray-400">
+                        {option.description}
+                      </span>
+                      <span className="mt-1 block break-words text-sm text-cyan-300">
+                        {option.value}
+                      </span>
+                    </span>
+
+                    <ArrowUpRight
+                      size={17}
+                      className="shrink-0 text-gray-500"
+                    />
+                  </a>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsContactOpen(false)}
+              className="mt-6 w-full rounded-lg border border-white/15 px-4 py-3 text-sm font-semibold text-gray-300 transition hover:bg-white/5"
+            >
+              Close
+            </button>
+          </section>
+        </div>
+      )}
+    </>
   );
 }
 

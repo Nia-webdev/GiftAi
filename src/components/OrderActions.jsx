@@ -150,7 +150,7 @@ function OrderActions({ order, onUpdate }) {
           <button
             type="button"
             onClick={() => openPanel("cancel")}
-            className="rounded-lg border border-rose-400/50 px-5 py-3 text-sm font-semibold text-rose-300 transition hover:bg-rose-400/10"
+            className="rounded-lg border border-rose-400/50 px-5 py-3 text-sm font-semibold text-rose-300 transition duration-500 ease-out hover:bg-rose-400/10"
           >
             Cancel Order
           </button>
@@ -160,7 +160,7 @@ function OrderActions({ order, onUpdate }) {
           <button
             type="button"
             onClick={() => openPanel("return")}
-            className="rounded-lg border border-amber-400/50 px-5 py-3 text-sm font-semibold text-amber-300 transition hover:bg-amber-400/10"
+            className="rounded-lg border border-amber-400/50 px-5 py-3 text-sm font-semibold text-amber-300 transition duration-500 ease-out hover:bg-amber-400/10"
           >
             Return Order
           </button>
@@ -169,7 +169,7 @@ function OrderActions({ order, onUpdate }) {
         <button
           type="button"
           onClick={() => openPanel("complaint")}
-          className="rounded-lg border border-[#164E82] px-5 py-3 text-sm font-semibold text-[#C7D8E9] transition hover:border-cyan-400/50 hover:text-white"
+          className="rounded-lg border border-[#164E82] px-5 py-3 text-sm font-semibold text-[#C7D8E9] transition duration-500 ease-out hover:border-cyan-400/50 hover:text-white"
         >
           File Complaint
         </button>
@@ -228,7 +228,7 @@ function OrderActions({ order, onUpdate }) {
           <div className="flex flex-wrap gap-3">
             <button
               type="submit"
-              className="rounded-lg bg-[#22D3EE] px-5 py-3 text-sm font-bold text-[#001329] transition hover:bg-[#52E7FF]"
+              className="rounded-lg bg-[#22D3EE] px-5 py-3 text-sm font-bold text-[#001329] transition duration-500 ease-out hover:bg-[#52E7FF]"
             >
               {PANELS[panel].submit}
             </button>

@@ -22,7 +22,7 @@ function PaymentMethods({
           return (
             <label
               key={item.id}
-              className={`cursor-pointer rounded-xl border p-4 transition ${
+              className={`cursor-pointer rounded-xl border p-4 transition duration-500 ease-out ${
                 active
                   ? "border-cyan-400 bg-cyan-400/10"
                   : "border-[#164E82] bg-[#071D3A] hover:border-cyan-400/50"

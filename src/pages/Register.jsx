@@ -1,8 +1,22 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import { motion } from "framer-motion";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import AuthShell from "../components/AuthShell";
+import { AuthButton, AuthError, AuthField } from "../components/AuthParts";
+
+const strengthLabels = ["Too short", "Weak", "Okay", "Good", "Strong"];
+const strengthColors = ["#475569", "#F43F5E", "#F59E0B", "#22D3EE", "#34D399"];
+
+function passwordStrength(password) {
+  if (!password) return 0;
+  let score = 0;
+  if (password.length >= 8) score += 1;
+  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score += 1;
+  if (/\d/.test(password)) score += 1;
+  if (/[^A-Za-z0-9]/.test(password)) score += 1;
+  return score;
+}
 
 function Register() {
   const navigate = useNavigate();
@@ -16,6 +30,11 @@ function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [status, setStatus] = useState("idle");
+
+  const strength = passwordStrength(form.password);
+  const passwordsMatch =
+    form.confirmPassword.length > 0 && form.password === form.confirmPassword;
 
   const handleChange = (event) => {
     setForm({
@@ -48,9 +67,7 @@ function Register() {
       return;
     }
 
-    const savedUsers = JSON.parse(
-      localStorage.getItem("giftai-users") || "[]"
-    );
+    const savedUsers = JSON.parse(localStorage.getItem("giftai-users") || "[]");
 
     const email = form.email.trim().toLowerCase();
 
@@ -69,154 +86,34 @@ function Register() {
       password: form.password,
     };
 
-    localStorage.setItem(
-      "giftai-users",
-      JSON.stringify([...savedUsers, newUser])
-    );
+    setStatus("loading");
 
-    navigate("/login", {
-      state: { registered: true },
-    });
+    setTimeout(() => {
+      localStorage.setItem("giftai-users", JSON.stringify([...savedUsers, newUser]));
+
+      setStatus("success");
+
+      setTimeout(
+        () =>
+          navigate("/login", {
+            state: { registered: true },
+          }),
+        700
+      );
+    }, 800);
   };
 
   return (
-    <div className="min-h-screen bg-[#020D20] text-white">
-      <Navbar />
-
-      <main className="flex min-h-[75vh] items-center justify-center px-5 py-12">
-        <section className="w-full max-w-md rounded-2xl border border-[#164E82] bg-[#071D3A] p-6 shadow-xl sm:p-8">
-          <div className="mb-6 text-center">
-            <div className="text-5xl">🎁</div>
-
-            <h1 className="mt-4 text-3xl font-bold">
-              Create Account
-            </h1>
-
-            <p className="mt-2 text-sm text-[#9BB5D0]">
-              Join GiftAI and discover thoughtful gifts.
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label
-                htmlFor="name"
-                className="mb-2 block text-sm font-medium"
-              >
-                Full Name
-              </label>
-
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                required
-                className="w-full rounded-lg border border-[#164E82] bg-[#020D20] px-4 py-3 outline-none focus:border-[#22D3EE]"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-medium"
-              >
-                Email Address
-              </label>
-
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                required
-                className="w-full rounded-lg border border-[#164E82] bg-[#020D20] px-4 py-3 outline-none focus:border-[#22D3EE]"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-medium"
-              >
-                Password
-              </label>
-
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="At least 8 characters"
-                minLength={8}
-                required
-                className="w-full rounded-lg border border-[#164E82] bg-[#020D20] px-4 py-3 outline-none focus:border-[#22D3EE]"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="mb-2 block text-sm font-medium"
-              >
-                Confirm Password
-              </label>
-
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                placeholder="Enter password again"
-                required
-                className="w-full rounded-lg border border-[#164E82] bg-[#020D20] px-4 py-3 outline-none focus:border-[#22D3EE]"
-              />
-            </div>
-
-            <label className="flex items-center gap-2 text-sm text-[#9BB5D0]">
-              <input
-                type="checkbox"
-                checked={showPassword}
-                onChange={(event) =>
-                  setShowPassword(event.target.checked)
-                }
-                className="accent-cyan-400"
-              />
-              Show passwords
-            </label>
-
-            {error && (
-              <p
-                role="alert"
-                className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-300"
-              >
-                {error}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-[#22D3EE] px-5 py-3 font-bold text-[#001329] transition hover:bg-[#52E7FF]"
-            >
-              Create Account
-            </button>
-          </form>
-
+    <AuthShell
+      title="Create Account"
+      subtitle="Join GiftAI and discover thoughtful gifts."
+      footer={
+        <>
           <p className="mt-6 text-center text-sm text-[#9BB5D0]">
             Already have an account?{" "}
             <Link
               to="/login"
-              className="font-semibold text-[#22D3EE] hover:text-white"
+              className="hv-link font-semibold text-[#22D3EE] transition duration-500 hover:text-white"
             >
               Login
             </Link>
@@ -224,15 +121,119 @@ function Register() {
 
           <Link
             to="/gifts"
-            className="mt-5 block text-center text-sm text-[#9BB5D0] hover:text-[#22D3EE]"
+            className="group mt-5 block text-center text-sm text-[#9BB5D0] transition duration-500 hover:text-[#22D3EE]"
           >
-            ← Continue browsing gifts
+            <span className="inline-block transition-transform duration-500 group-hover:-translate-x-1">←</span>{" "}
+            Continue browsing gifts
           </Link>
-        </section>
-      </main>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <AuthField
+          id="name"
+          name="name"
+          type="text"
+          label="Full Name"
+          icon={User}
+          autoComplete="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Enter your full name"
+          required
+        />
 
-      <Footer />
-    </div>
+        <AuthField
+          id="email"
+          name="email"
+          type="email"
+          label="Email Address"
+          icon={Mail}
+          autoComplete="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="you@example.com"
+          required
+        />
+
+        <div>
+          <AuthField
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            label="Password"
+            icon={Lock}
+            autoComplete="new-password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="At least 8 characters"
+            minLength={8}
+            required
+            right={
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide passwords" : "Show passwords"}
+                className="px-4 text-[#5F7FA3] transition-colors duration-500 hover:text-[#22D3EE]"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            }
+          />
+
+          {/* Strength meter */}
+          <div className="mt-2.5 flex items-center gap-3">
+            <div className="flex flex-1 gap-1.5">
+              {[1, 2, 3, 4].map((step) => (
+                <motion.span
+                  key={step}
+                  className="h-1.5 flex-1 rounded-full"
+                  animate={{
+                    backgroundColor: step <= strength ? strengthColors[strength] : "#10365B",
+                  }}
+                  transition={{ duration: 0.4 }}
+                />
+              ))}
+            </div>
+            <span className="w-16 text-right text-xs" style={{ color: strengthColors[strength] }}>
+              {form.password ? strengthLabels[strength] : ""}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <AuthField
+            id="confirmPassword"
+            name="confirmPassword"
+            type={showPassword ? "text" : "password"}
+            label="Confirm Password"
+            icon={Lock}
+            autoComplete="new-password"
+            value={form.confirmPassword}
+            onChange={handleChange}
+            placeholder="Enter password again"
+            required
+          />
+
+          {form.confirmPassword && (
+            <motion.p
+              key={passwordsMatch ? "match" : "no-match"}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`mt-2 text-xs ${passwordsMatch ? "text-emerald-300" : "text-amber-300"}`}
+            >
+              {passwordsMatch ? "✓ Passwords match" : "Passwords do not match yet"}
+            </motion.p>
+          )}
+        </div>
+
+        <AuthError message={error} />
+
+        <AuthButton status={status} loadingText="Creating account…" successText="Account created!">
+          Create Account
+        </AuthButton>
+      </form>
+    </AuthShell>
   );
 }
 

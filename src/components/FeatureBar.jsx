@@ -25,14 +25,14 @@ function FeatureBar() {
       {features.map((feature) => (
         <div
           key={feature.title}
-          className="group flex items-center gap-4 rounded-[18px] border border-[#243F68] bg-[#10264B] px-5 py-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#22D3EE] hover:bg-[#142F59] hover:shadow-[0_0_22px_rgba(34,211,238,0.16)]"
+          className="group flex items-center gap-4 rounded-[18px] border border-[#243F68] bg-[#10264B] px-5 py-5 transition-all duration-500 ease-out hover:border-[#22D3EE] hover:bg-[#142F59] hover:shadow-[0_0_22px_rgba(34,211,238,0.16)]"
         >
-          <div className="flex h-14 w-12 shrink-0 items-center justify-center rounded-full border border-[#22D3EE] bg-[#061A3A] text-2xl transition-transform duration-300 group-hover:scale-110">
+          <div className="flex h-14 w-12 shrink-0 items-center justify-center rounded-full border border-[#22D3EE] bg-[#061A3A] text-2xl transition-transform duration-500 ease-out group-hover:scale-105">
             {feature.icon}
           </div>
 
           <div>
-            <h3 className="font-bold text-white transition-colors duration-300 group-hover:text-[#22D3EE]">
+            <h3 className="font-bold text-white transition-colors duration-500 ease-out group-hover:text-[#22D3EE]">
               {feature.title}
             </h3>
             <p className="mt-1 text-sm text-[#B9C7E6]">
